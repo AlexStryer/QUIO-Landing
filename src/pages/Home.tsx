@@ -22,7 +22,7 @@ export default function Home() {
       <section className="relative h-screen min-h-[600px] overflow-hidden bg-forest">
         {/* Full-bleed painting */}
         <img
-          src="/images/hero-bg.png"
+          src={`${import.meta.env.BASE_URL}images/hero-bg.png`}
           alt="Óleo de un agave floreciente en el desierto mexicano al atardecer"
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"

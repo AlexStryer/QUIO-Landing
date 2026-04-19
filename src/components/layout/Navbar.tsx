@@ -22,7 +22,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY >= 50)
+    const onScroll = () => setScrolled(window.scrollY > 80)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -34,15 +34,12 @@ export default function Navbar() {
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), [])
 
   const onHero = isHome && !scrolled && !menuOpen
-  const textColor = onHero ? 'text-cream' : 'text-forest'
+  const textColor = onHero ? 'text-white' : 'text-forest'
+
   const linkStyle = (to: string) =>
-    `text-[13px] tracking-[0.06em] font-body font-light transition-opacity duration-300 ${textColor} ${
+    `text-[13px] tracking-[0.06em] font-normal transition-opacity duration-300 link-underline ${textColor} ${
       pathname === to ? 'opacity-100' : 'opacity-50 hover:opacity-100'
     }`
-
-  /* On the hero: hide nav links, show only a small centered logo.
-     Once scrolled (or on any other page): full navbar with links. */
-  const showLinks = !onHero
 
   return (
     <motion.nav
@@ -50,27 +47,23 @@ export default function Navbar() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: isHome ? 2.8 : 0, ease: 'easeOut' as const }}
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        scrolled && !menuOpen ? 'bg-cream/80 backdrop-blur-md' : 'bg-transparent'
+        onHero
+          ? 'bg-transparent'
+          : 'bg-cream/90 backdrop-blur-md border-b border-sage/20'
       }`}
       aria-label="Navegación principal"
     >
-      <div className={`container-site px-5 md:px-8 lg:px-16 transition-all duration-500 ${
-        onHero ? 'h-12 lg:h-14' : 'h-16 lg:h-20'
-      } grid grid-cols-2 lg:grid-cols-3 items-center`}>
-        {/* Mobile: logo / Desktop: left links */}
+      <div className={`container-site px-[5%] md:px-[6%] lg:px-[7%] h-16 lg:h-20 grid grid-cols-2 lg:grid-cols-3 items-center`}>
+        {/* Mobile: logo left / Desktop: left links */}
         <div>
           <Link
             to="/"
-            className={`lg:hidden font-display tracking-[0.25em] text-lg transition-all duration-500 ${textColor} ${
-              onHero ? 'opacity-0 pointer-events-none' : 'opacity-100'
-            }`}
+            className={`lg:hidden font-display tracking-[0.25em] text-lg ${textColor}`}
             aria-label="QUIO — Inicio"
           >
             QUIO
           </Link>
-          <div className={`hidden lg:flex items-center gap-8 transition-opacity duration-500 ${
-            showLinks ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}>
+          <div className="hidden lg:flex items-center gap-10">
             {leftLinks.map((link) => (
               <Link
                 key={link.to}
@@ -84,12 +77,10 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Desktop: centered logo — hidden on hero */}
+        {/* Desktop: centered logo */}
         <Link
           to="/"
-          className={`hidden lg:block text-center font-display tracking-[0.25em] transition-all duration-500 ${textColor} ${
-            onHero ? 'text-xl opacity-0 pointer-events-none' : 'text-xl opacity-100'
-          }`}
+          className={`hidden lg:block text-center font-display tracking-[0.3em] text-xl ${textColor}`}
           aria-label="QUIO — Inicio"
         >
           QUIO
@@ -97,9 +88,7 @@ export default function Navbar() {
 
         {/* Mobile: hamburger / Desktop: right links */}
         <div className="flex items-center justify-end">
-          <div className={`hidden lg:flex items-center gap-8 transition-opacity duration-500 ${
-            showLinks ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}>
+          <div className="hidden lg:flex items-center gap-10">
             {rightLinks.map((link) => (
               <Link
                 key={link.to}
@@ -132,30 +121,36 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu overlay */}
+      {/* Mobile fullscreen overlay */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' as const }}
-            className="lg:hidden bg-cream/95 backdrop-blur-md overflow-hidden"
+            className="lg:hidden fixed inset-0 top-16 bg-cream z-40 flex flex-col justify-center px-[8%]"
             role="menu"
           >
-            <div className="flex flex-col gap-1 px-5 py-6">
-              {allLinks.map((link) => (
-                <Link
+            <div className="flex flex-col gap-6">
+              {allLinks.map((link, i) => (
+                <motion.div
                   key={link.to}
-                  to={link.to}
-                  role="menuitem"
-                  className={`font-body text-base text-forest py-2 ${
-                    pathname === link.to ? 'opacity-100' : 'opacity-50'
-                  }`}
-                  aria-current={pathname === link.to ? 'page' : undefined}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: i * 0.05 }}
                 >
-                  {link.label}
-                </Link>
+                  <Link
+                    to={link.to}
+                    role="menuitem"
+                    className={`font-display text-3xl text-forest link-underline ${
+                      pathname === link.to ? 'opacity-100' : 'opacity-40'
+                    }`}
+                    aria-current={pathname === link.to ? 'page' : undefined}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </motion.div>

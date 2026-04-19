@@ -5,20 +5,18 @@ import { fadeUp, fadeUpDelayed, transitionBase } from '../lib/animations'
 export default function Contacto() {
   return (
     <>
-      {/* ─── Section 1: Hero ─── */}
+      {/* ─── Hero ─── */}
       <section className="section-padding pt-32 md:pt-40">
-        <div className="container-site grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+        <div className="container-site">
           <motion.div
-            className="lg:col-span-7"
+            className="max-w-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={transitionBase}
           >
-            <p className="label-mono mb-4">Get in touch</p>
-            {/* COPY: Contacto heading */}
-            <h1 className="heading-editorial mb-6">Hablemos</h1>
-            {/* COPY: Contacto intro */}
-            <p className="text-lg max-w-lg text-muted leading-relaxed">
+            <p className="label-mono mb-6">Get in touch</p>
+            <h1 className="heading-editorial mb-8">Hablemos</h1>
+            <p className="text-lg text-muted leading-[1.7] max-w-lg">
               El primer paso para hacer crecer tu marca es una conversación. Sin compromiso,
               sin formalismos. Solo cuéntanos qué necesitas.
             </p>
@@ -26,60 +24,59 @@ export default function Contacto() {
         </div>
       </section>
 
-      {/* ─── Section 2: Contact Area ─── */}
+      {/* ─── Contact Area ─── */}
       <section className="section-padding pt-0 pb-24">
         <div className="container-site grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
-          {/* Image */}
+          {/* Portrait photo */}
           <motion.div className="lg:col-span-6" {...fadeUp}>
-            {/* TODO: Replace with actual contact image */}
-            <div
-              className="w-full bg-stone/30 rounded"
+            <img
+              src={`${import.meta.env.BASE_URL}images/design-work-2.jpeg`}
+              alt="Espacio creativo QUIO"
+              className="w-full object-cover"
               style={{ aspectRatio: '4/5' }}
-              role="img"
-              aria-label="Imagen de contacto QUIO"
             />
           </motion.div>
 
-          {/* Info Blocks */}
+          {/* Contact info blocks */}
           <motion.div
             className="lg:col-span-5 lg:col-start-8 flex flex-col justify-center"
             {...fadeUpDelayed(0.15)}
           >
-            {/* WhatsApp CTA */}
-            <div className="border-t border-stone/40 py-6">
+            {/* WhatsApp */}
+            <div className="border-t border-sage/25 py-8">
+              <p className="label-mono mb-4">WhatsApp</p>
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="whatsapp-btn text-center w-full block"
+                className="cta-btn w-full text-center block"
               >
-                Escríbenos por WhatsApp
+                Escríbenos
               </a>
             </div>
 
-            {/* Social */}
-            <div className="border-t border-stone/40 py-6">
-              <p className="label-mono mb-2">Social</p>
+            {/* Instagram */}
+            <div className="border-t border-sage/25 py-8">
+              <p className="label-mono mb-3">Instagram</p>
               <a
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted hover:text-sage transition-colors duration-200"
+                className="text-[14px] text-forest link-underline"
               >
                 {INSTAGRAM_HANDLE}
               </a>
             </div>
 
             {/* Location */}
-            <div className="border-t border-stone/40 py-6">
-              <p className="label-mono mb-2">Ubicación</p>
-              <p className="text-sm text-muted">Querétaro, México</p>
+            <div className="border-t border-sage/25 py-8">
+              <p className="label-mono mb-3">Ubicación</p>
+              <p className="text-[14px] text-forest">Querétaro, México</p>
             </div>
 
             {/* Quote */}
-            <div className="border-t border-stone/40 py-6">
-              {/* COPY: Contact quote */}
-              <p className="text-sm text-muted italic leading-relaxed">
+            <div className="border-t border-sage/25 py-8">
+              <p className="text-[14px] text-muted leading-[1.8]">
                 Nos encanta conocer nuevos proyectos. Si tienes un negocio, una marca o una
                 idea, queremos escucharte.
               </p>

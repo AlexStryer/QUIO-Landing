@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { WHATSAPP_URL } from '../constants'
-import { fadeUp, fadeUpDelayed, scaleIn } from '../lib/animations'
+import { fadeUp, fadeUpDelayed, heroZoom, transitionBase } from '../lib/animations'
 
 const services = [
   'Creación y producción de contenido',
@@ -13,54 +13,95 @@ const services = [
   'Gestión de redes sociales',
 ] as const
 
+const projects = [
+  {
+    title: 'Alta Competencia',
+    category: 'Contenido',
+    year: '2024',
+    image: 'swimmer.png',
+    cols: 'md:col-span-7',
+    aspect: '4/3',
+  },
+  {
+    title: 'Regina Palacios',
+    category: 'Branding',
+    year: '2024',
+    image: 'regina-palacios.png',
+    cols: 'md:col-span-5',
+    aspect: '4/5',
+  },
+  {
+    title: 'Vintage Classics',
+    category: 'Producción',
+    year: '2023',
+    image: 'vintage-car.png',
+    cols: 'md:col-span-5',
+    aspect: '3/4',
+  },
+  {
+    title: 'Garden Party',
+    category: 'Estrategia',
+    year: '2024',
+    image: 'picnic.png',
+    cols: 'md:col-span-7',
+    aspect: '4/3',
+  },
+  {
+    title: 'Diseño Editorial',
+    category: 'Diseño',
+    year: '2024',
+    image: 'design-work-1.jpeg',
+    cols: 'md:col-span-12',
+    aspect: '21/9',
+  },
+] as const
+
 export default function Home() {
-  const d = 2.2 /* base delay — synced to loading screen fade */
+  const d = 2.2
 
   return (
     <>
-      {/* ─── Section 1: Hero — painting + dark band at bottom ─── */}
+      {/* ─── Hero ─── */}
       <section className="relative h-screen min-h-[600px] overflow-hidden bg-forest">
-        {/* Full-bleed painting */}
-        <img
+        {/* Agave painting — zooms in on load */}
+        <motion.img
           src={`${import.meta.env.BASE_URL}images/hero-bg.png`}
-          alt="Óleo de un agave floreciente en el desierto mexicano al atardecer"
+          alt="Óleo de un agave floreciente"
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
+          {...heroZoom}
         />
 
-        {/* Hard fade to solid dark at the bottom — text panel */}
-        <div className="absolute inset-0 bg-gradient-to-t from-forest from-[18%] via-forest/60 via-[30%] to-transparent to-[50%] pointer-events-none" />
+        {/* Gradient to dark at bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-forest from-[14%] via-forest/70 via-[28%] to-transparent to-[55%] pointer-events-none" />
 
-        {/* ─── Bottom text panel ─── */}
+        {/* Bottom text */}
         <div className="relative z-10 h-full flex flex-col justify-end">
           <motion.div
-            className="px-6 md:px-10 lg:px-14 pb-8 md:pb-12 lg:pb-14"
+            className="px-[5%] md:px-[6%] lg:px-[7%] pb-10 md:pb-14 lg:pb-16"
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: d, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            {/* QUIO — prominent, not huge */}
-            <p className="font-display text-cream text-lg md:text-xl tracking-[0.25em] mb-8 md:mb-10">
+            <p className="font-display text-white text-lg md:text-xl tracking-[0.3em] mb-8 md:mb-10">
               QUIO
             </p>
 
-            {/* Main headline — large, confident, high contrast on dark */}
-            <h1 className="font-display text-cream text-[clamp(2.8rem,6.5vw,5.5rem)] leading-[1] tracking-[-0.02em] max-w-[700px]">
-              {/* COPY: Hero headline */}
+            <h1 className="font-display text-white text-[clamp(2.6rem,6vw,5rem)] leading-[0.95] tracking-[-0.02em] max-w-[650px] font-normal">
               Tu marca merece
               <br />
-              <em className="italic text-olive">florecer</em>
+              florecer
             </h1>
 
-            {/* Divider + subtitle row */}
+            {/* Divider + subtitle */}
             <motion.div
               className="flex items-center gap-6 mt-8 md:mt-10"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: d + 0.5 }}
             >
-              <div className="h-[1px] w-12 bg-cream/15" aria-hidden="true" />
-              <p className="text-cream/35 font-body text-[11px] md:text-xs tracking-[0.05em]">
+              <div className="h-[1px] w-12 bg-white/20" aria-hidden="true" />
+              <p className="text-white/40 text-[11px] md:text-xs tracking-[0.05em]">
                 Estrategia y contenido digital para marcas con intención
               </p>
             </motion.div>
@@ -68,20 +109,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── Section 1b: Tagline bridge ─── */}
-      <section className="py-14 md:py-20 lg:py-28 px-5 md:px-8 lg:px-20">
-        <div className="container-site flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 lg:gap-16">
-          <motion.div {...fadeUp}>
-            {/* COPY: Bridge headline */}
+      {/* ─── Tagline Bridge ─── */}
+      <section className="section-padding">
+        <div className="container-site flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 lg:gap-20">
+          <motion.div className="lg:max-w-[55%]" {...fadeUp}>
             <h2 className="heading-editorial text-forest">
               Raíces profundas,
               <br />
-              <em>crecimiento visible</em>
+              crecimiento visible
             </h2>
           </motion.div>
           <motion.div className="max-w-sm lg:pb-3" {...fadeUpDelayed(0.15)}>
-            {/* COPY: Bridge supporting text */}
-            <p className="text-sm text-muted leading-relaxed mb-6">
+            <p className="text-[14px] text-muted leading-[1.8] mb-8">
+              {/* COPY: Bridge text */}
               Como el maguey, primero las raíces — después la flor.
               Construimos la base estratégica que sostiene cada pieza
               de contenido, cada campaña, cada decisión.
@@ -90,7 +130,7 @@ export default function Home() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="outline-btn inline-block"
+              className="cta-btn"
             >
               Hablemos
             </a>
@@ -98,14 +138,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── Section 2: Editorial Intro (About) ─── */}
-      <section className="section-padding">
+      {/* ─── About ─── */}
+      <section className="section-padding pt-0">
         <div className="container-site grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
           <motion.div className="lg:col-span-5" {...fadeUp}>
-            <p className="label-mono mb-4">About</p>
-            {/* COPY: About heading */}
+            <p className="label-mono mb-6">About</p>
             <h2 className="heading-large">
-              Raíces firmes, crecimiento <em>estratégico</em>
+              Raíces firmes, crecimiento estratégico
             </h2>
           </motion.div>
 
@@ -113,62 +152,54 @@ export default function Home() {
             className="lg:col-span-5 lg:col-start-7 lg:pt-24"
             {...fadeUpDelayed(0.15)}
           >
-            {/* COPY: About paragraphs */}
-            <p className="text-sm text-muted leading-relaxed mb-4">
+            <p className="text-[14px] text-muted leading-[1.8] mb-4">
               Las plantas del desierto sobreviven porque primero desarrollan raíces profundas.
               Antes del crecimiento visible, existe un trabajo silencioso que sostiene todo lo
               que vendrá después.
             </p>
-            <p className="text-sm text-muted leading-relaxed mb-6">
+            <p className="text-[14px] text-muted leading-[1.8] mb-8">
               QUIO es un estudio boutique de marketing en Querétaro. Creemos que las marcas
               crecen mejor cuando la estrategia precede a la acción, y cuando cada pieza de
               contenido tiene un propósito claro.
             </p>
             <Link
               to="/estudio"
-              className="text-sm text-forest border-b border-forest/30 hover:border-forest transition-colors duration-200"
+              className="link-underline text-[13px] text-forest"
             >
-              Conoce nuestro estudio →
+              Conoce nuestro estudio
             </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* ─── Section 3: Featured Image Break ─── */}
-      <section className="px-5 md:px-8 lg:px-20">
-        <motion.div className="container-site" {...scaleIn}>
-          {/* TODO: Replace with actual panoramic image */}
-          <div
-            className="w-full bg-stone/30 rounded"
-            style={{ aspectRatio: '21/9' }}
-            role="img"
-            aria-label="Imagen destacada del estudio"
+      {/* ─── Full-width Photo Break ─── */}
+      <section>
+        <motion.div {...fadeUp}>
+          <img
+            src={`${import.meta.env.BASE_URL}images/picnic.png`}
+            alt="Sesión fotográfica de mesa editorial con flores y frutas"
+            className="w-full h-[50vh] md:h-[60vh] lg:h-[70vh] object-cover"
           />
         </motion.div>
       </section>
 
-      {/* ─── Section 4: Services Preview ─── */}
+      {/* ─── Services Preview ─── */}
       <section className="section-padding">
         <div className="container-site">
-          {/* Top: heading + description */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
             <div className="lg:col-span-6">
-              <p className="label-mono mb-4">Services</p>
-              {/* COPY: Services heading */}
-              <h2 className="heading-large">
-                Lo que <em>hacemos</em>
-              </h2>
+              <p className="label-mono mb-6">Services</p>
+              <h2 className="heading-large">Lo que hacemos</h2>
             </div>
             <div className="lg:col-span-4 lg:col-start-8 flex items-end">
-              <p className="text-sm text-muted leading-relaxed">
+              <p className="text-[14px] text-muted leading-[1.8]">
                 Un enfoque integral que combina creatividad, datos y estrategia para hacer
                 crecer tu marca con intención.
               </p>
             </div>
           </div>
 
-          {/* Service list */}
-          <ul className="border-t border-stone/40 list-none p-0 m-0">
+          <ul className="border-t border-sage/25 list-none p-0 m-0">
             {services.map((service, i) => (
               <motion.li
                 key={service}
@@ -176,63 +207,99 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, ease: 'easeOut' as const, delay: i * 0.04 }}
-                className="group flex items-center justify-between border-b border-stone/40 py-5 md:py-6 cursor-default"
+                className="group flex items-center justify-between border-b border-sage/25 py-5 md:py-6 cursor-default"
               >
-                <div className="flex items-center gap-4 md:gap-6">
-                  <span className="text-xs text-muted w-6" aria-hidden="true">
+                <div className="flex items-center gap-5 md:gap-8">
+                  <span className="text-[11px] text-muted w-6 font-bold tracking-wider" aria-hidden="true">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <span className="font-display text-base lg:text-lg text-forest group-hover:text-sage transition-colors duration-200">
+                  <span className="font-display text-[15px] lg:text-[17px] text-forest group-hover:text-sage transition-colors duration-300">
                     {service}
                   </span>
                 </div>
-                <span className="text-sage opacity-0 group-hover:opacity-100 transition-opacity duration-200" aria-hidden="true">
-                  →
+                <span className="text-sage text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-widest" aria-hidden="true">
+                  &rarr;
                 </span>
               </motion.li>
             ))}
           </ul>
 
-          {/* Bottom CTA */}
-          <div className="mt-10">
-            <Link to="/servicios" className="outline-btn">
-              Explorar todos los servicios
+          <div className="mt-12">
+            <Link to="/servicios" className="cta-btn">
+              Explorar servicios
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ─── Section 5: Closing CTA ─── */}
-      <section className="bg-sand pb-24">
-        <div className="section-padding">
-          <div className="container-site grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
-            <motion.div className="lg:col-span-7" {...fadeUp}>
-              <p className="label-mono mb-4">Let's grow</p>
-              {/* COPY: CTA heading */}
-              <h2 className="heading-editorial">
-                Tu marca merece <em>florecer</em>
-              </h2>
-            </motion.div>
-
-            <motion.div
-              className="lg:col-span-4 lg:col-start-9 flex flex-col justify-center"
-              {...fadeUpDelayed(0.15)}
-            >
-              {/* COPY: CTA paragraph */}
-              <p className="text-sm text-muted leading-relaxed mb-6">
-                Cuéntanos sobre tu negocio. El primer paso es una conversación sin compromiso
-                donde entendemos tus necesidades y exploramos cómo podemos ayudarte.
-              </p>
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="whatsapp-btn text-center w-full sm:w-auto"
-              >
-                Escríbenos por WhatsApp
-              </a>
-            </motion.div>
+      {/* ─── Selected Work ─── */}
+      <section className="section-padding pt-0">
+        <div className="container-site">
+          <div className="flex items-end justify-between mb-16">
+            <div>
+              <p className="label-mono mb-6">Selected work</p>
+              <h2 className="heading-large">Proyectos</h2>
+            </div>
+            <Link to="/proyectos" className="hidden md:block link-underline text-[13px] text-forest">
+              Ver todos
+            </Link>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
+            {projects.map((project, i) => (
+              <motion.article
+                key={project.title}
+                className={`col-span-1 ${project.cols}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ ...transitionBase, delay: (i % 2) * 0.1 }}
+              >
+                <div className="group relative overflow-hidden">
+                  <img
+                    src={`${import.meta.env.BASE_URL}images/${project.image}`}
+                    alt={`${project.title} — ${project.category}`}
+                    className="w-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                    style={{ aspectRatio: project.aspect }}
+                  />
+                </div>
+                <div className="mt-4 flex items-baseline justify-between">
+                  <div>
+                    <p className="label-mono mb-1">{project.category}</p>
+                    <h3 className="font-display text-[17px] text-forest">{project.title}</h3>
+                  </div>
+                  <span className="text-[11px] text-muted">{project.year}</span>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+
+          <div className="mt-12 md:hidden">
+            <Link to="/proyectos" className="cta-btn">
+              Ver todos los proyectos
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Closing CTA ─── */}
+      <section className="section-padding bg-forest">
+        <div className="container-site text-center">
+          <motion.div {...fadeUp}>
+            <h2 className="font-display text-cream text-4xl md:text-5xl lg:text-[5rem] leading-[0.95] tracking-[-0.02em] font-normal mb-10">
+              Tu marca merece
+              <br />
+              florecer
+            </h2>
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cta-btn-cream"
+            >
+              Escríbenos por WhatsApp
+            </a>
+          </motion.div>
         </div>
       </section>
     </>

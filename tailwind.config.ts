@@ -12,6 +12,7 @@ export default {
         sage: '#85926d',
         olive: '#767344',
         forest: '#303625',
+        black: '#1a1a1a',
         stone: '#d4d4d4',
         sand: 'hsl(38, 30%, 88%)',
         background: '#f5eedd',
@@ -21,7 +22,7 @@ export default {
       },
       fontFamily: {
         display: ['Garet', 'sans-serif'],
-        body: ['Poppins', 'sans-serif'],
+        body: ['Garet', 'sans-serif'],
       },
     },
   },

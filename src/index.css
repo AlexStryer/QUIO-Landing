@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Font Faces ── */
+/* ── Fonts ── */
 
 @font-face {
   font-family: 'Garet';
@@ -19,14 +19,18 @@
   font-display: swap;
 }
 
-/* ── CSS Custom Properties ── */
+/* ── Tokens ── */
 
 :root {
   --cream: #f5eedd;
   --sage: #85926d;
   --olive: #767344;
   --forest: #303625;
-  --black: #1a1a1a;
+  --stone: #d4d4d4;
+  --muted: rgba(48, 54, 37, 0.55);
+  --border-light: rgba(48, 54, 37, 0.08);
+  --border-dark: rgba(245, 238, 221, 0.14);
+  --shadow-elevated: 0 4px 10px rgba(48, 54, 37, 0.1);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -34,32 +38,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Base Resets ── */
+/* ── Base ── */
 
 body {
   margin: 0;
-  font-family: 'Garet', sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: var(--cream);
   color: var(--forest);
   font-weight: 400;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 #root {
   min-height: 100svh;
   position: relative;
-}
-
-/* Noise texture overlay */
-#root::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  pointer-events: none;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 256px 256px;
+  overflow-x: hidden;
 }
 
 *, *::before, *::after {
@@ -86,24 +80,31 @@ body {
 
 *:focus-visible {
   outline: 2px solid var(--sage);
-  outline-offset: 2px;
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
-/* ── Hide Scrollbar ── */
+/* ── Scrollbar ── */
 
 html {
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(48, 54, 37, 0.2) transparent;
 }
 ::-webkit-scrollbar {
-  display: none;
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(48, 54, 37, 0.2);
+  border-radius: 4px;
 }
 
-/* ── Page Transition ── */
+/* ── Page Transitions ── */
 
 @keyframes pageIn {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -112,73 +113,258 @@ html {
 }
 
 .page-enter {
-  animation: pageIn 0.5s ease-out both;
+  animation: pageIn 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
 }
 
-/* ── Utility Classes ── */
+/* ── Floating soft-cloud motion ── */
+
+@keyframes drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(3%, -2%) scale(1.04); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-4%, 3%) scale(0.97); }
+}
+@keyframes drift-c {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(2%, 4%) scale(1.05); }
+}
+
+.cloud-a { animation: drift-a 18s ease-in-out infinite; }
+.cloud-b { animation: drift-b 24s ease-in-out infinite; }
+.cloud-c { animation: drift-c 20s ease-in-out infinite; }
+
+/* ── Components ── */
 
 @layer components {
+  /* Layout */
   .container-site {
-    @apply max-w-[1400px] mx-auto;
-  }
-
-  .heading-editorial {
-    font-family: 'Garet', sans-serif;
-    font-weight: 400;
-    @apply text-4xl md:text-5xl lg:text-[5.5rem] leading-[0.95] tracking-[-0.02em];
-  }
-
-  .heading-large {
-    font-family: 'Garet', sans-serif;
-    font-weight: 400;
-    @apply text-3xl md:text-4xl lg:text-[4rem] leading-[0.95] tracking-[-0.02em];
-  }
-
-  .heading-medium {
-    font-family: 'Garet', sans-serif;
-    font-weight: 400;
-    @apply text-2xl md:text-3xl lg:text-[2.5rem] leading-[1.05] tracking-[-0.01em];
-  }
-
-  .label-mono {
-    font-family: 'Garet', sans-serif;
-    font-weight: 700;
-    @apply uppercase tracking-[0.25em] text-[11px];
-    color: rgba(48, 54, 37, 0.55);
+    @apply max-w-site mx-auto px-6 md:px-10 lg:px-14;
   }
 
   .section-padding {
-    @apply px-[5%] md:px-[6%] lg:px-[7%] py-16 md:py-20 lg:py-[120px];
+    @apply py-20 md:py-28 lg:py-[120px];
   }
 
-  /* Sharp rectangle buttons — 1px forest border */
-  .cta-btn {
-    font-family: 'Garet', sans-serif;
-    font-weight: 700;
-    @apply inline-block border border-forest text-forest tracking-[0.2em] uppercase text-[11px] px-10 py-4 transition-all duration-300;
-  }
-  .cta-btn:hover {
-    @apply bg-forest text-cream;
-  }
-
-  .cta-btn-cream {
-    font-family: 'Garet', sans-serif;
-    font-weight: 700;
-    @apply inline-block border border-cream/40 text-cream tracking-[0.2em] uppercase text-[11px] px-10 py-4 transition-all duration-300;
-  }
-  .cta-btn-cream:hover {
-    @apply bg-cream text-forest;
+  /* Display type — Garet with negative tracking */
+  .display-xl {
+    font-family: 'Garet', 'Outfit', sans-serif;
+    font-weight: 400;
+    font-size: clamp(2.75rem, 7vw, 5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
   }
 
-  /* Text link with animated underline from left */
+  .display-lg {
+    font-family: 'Garet', 'Outfit', sans-serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .display-md {
+    font-family: 'Garet', 'Outfit', sans-serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .display-sm {
+    font-family: 'Garet', 'Outfit', sans-serif;
+    font-weight: 400;
+    font-size: clamp(1.2rem, 1.7vw, 1.4rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  /* Stats numbers — huge display figures */
+  .stat-number {
+    font-family: 'Garet', 'Outfit', sans-serif;
+    font-weight: 400;
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  /* Mono-style uppercase labels (Poppins doing mono duty) */
+  .mono-label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--forest);
+    opacity: 0.7;
+  }
+
+  .mono-label-sm {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--forest);
+    color: var(--cream);
+    border-radius: 4px;
+    border: 1px solid var(--forest);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  .btn-primary:hover {
+    background: var(--olive);
+    border-color: var(--olive);
+  }
+
+  .btn-outline {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: transparent;
+    color: var(--forest);
+    border: 1px solid rgba(48, 54, 37, 0.15);
+    border-radius: 4px;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .btn-outline:hover {
+    background: rgba(48, 54, 37, 0.05);
+    border-color: rgba(48, 54, 37, 0.3);
+  }
+
+  .btn-glass {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(245, 238, 221, 0.10);
+    color: var(--cream);
+    border: 1px solid rgba(245, 238, 221, 0.18);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+  .btn-glass:hover {
+    background: rgba(245, 238, 221, 0.18);
+  }
+
+  .btn-cream {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--cream);
+    color: var(--forest);
+    border-radius: 4px;
+    border: 1px solid var(--cream);
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .btn-cream:hover {
+    background: transparent;
+    color: var(--cream);
+  }
+
+  /* Badges */
+  .badge {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: rgba(48, 54, 37, 0.04);
+    border: 1px solid rgba(48, 54, 37, 0.1);
+    color: var(--forest);
+    border-radius: 4px;
+  }
+
+  .badge-dark {
+    background: rgba(245, 238, 221, 0.08);
+    border-color: rgba(245, 238, 221, 0.18);
+    color: var(--cream);
+  }
+
+  /* Card surfaces */
+  .card-surface {
+    background: #ffffff;
+    border: 1px solid rgba(48, 54, 37, 0.08);
+    border-radius: 8px;
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .card-tint {
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(48, 54, 37, 0.08);
+    border-radius: 8px;
+    backdrop-filter: blur(8px);
+  }
+
+  .card-dark {
+    background: rgba(245, 238, 221, 0.04);
+    border: 1px solid rgba(245, 238, 221, 0.1);
+    border-radius: 8px;
+  }
+
+  /* Link underline */
   .link-underline {
-    @apply relative inline-block;
+    position: relative;
+    display: inline-block;
   }
   .link-underline::after {
     content: '';
-    @apply absolute bottom-0 left-0 w-0 h-[1px] bg-current transition-all duration-300;
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.3s ease;
   }
   .link-underline:hover::after {
-    @apply w-full;
+    width: 100%;
+  }
+
+  /* Soft cloud gradient backdrops (hero and dark sections) */
+  .bg-cloud-light {
+    background:
+      radial-gradient(60% 55% at 18% 20%, rgba(133, 146, 109, 0.28), transparent 65%),
+      radial-gradient(55% 50% at 82% 15%, rgba(212, 212, 212, 0.55), transparent 70%),
+      radial-gradient(65% 55% at 55% 95%, rgba(118, 115, 68, 0.18), transparent 70%),
+      radial-gradient(40% 45% at 90% 85%, rgba(133, 146, 109, 0.22), transparent 70%),
+      #f5eedd;
+  }
+
+  .bg-cloud-dark {
+    background:
+      radial-gradient(60% 55% at 20% 20%, rgba(133, 146, 109, 0.22), transparent 65%),
+      radial-gradient(55% 50% at 85% 80%, rgba(118, 115, 68, 0.18), transparent 70%),
+      #303625;
   }
 }

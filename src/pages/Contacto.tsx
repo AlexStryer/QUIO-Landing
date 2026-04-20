@@ -6,17 +6,16 @@ export default function Contacto() {
   return (
     <>
       {/* ─── Hero ─── */}
-      <section className="section-padding pt-32 md:pt-40">
-        <div className="container-site">
+      <section className="relative bg-cloud-light overflow-hidden pt-32 md:pt-40 pb-20 md:pb-24">
+        <div className="relative container-site max-w-3xl">
           <motion.div
-            className="max-w-2xl"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={transitionBase}
           >
-            <p className="label-mono mb-6">Get in touch</p>
-            <h1 className="heading-editorial mb-8">Hablemos</h1>
-            <p className="text-lg text-muted leading-[1.7] max-w-lg">
+            <p className="mono-label mb-5">Contacto</p>
+            <h1 className="display-xl text-forest mb-8">Hablemos.</h1>
+            <p className="text-lg text-forest/75 leading-[1.6] max-w-xl">
               El primer paso para hacer crecer tu marca es una conversación. Sin compromiso,
               sin formalismos. Solo cuéntanos qué necesitas.
             </p>
@@ -24,62 +23,66 @@ export default function Contacto() {
         </div>
       </section>
 
-      {/* ─── Contact Area ─── */}
-      <section className="section-padding pt-0 pb-24">
-        <div className="container-site grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
-          {/* Portrait photo */}
+      {/* ─── Contact cards ─── */}
+      <section className="section-padding pt-0">
+        <div className="container-site grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
           <motion.div className="lg:col-span-6" {...fadeUp}>
-            <img
-              src={`${import.meta.env.BASE_URL}images/design-work-2.jpeg`}
-              alt="Espacio creativo QUIO"
-              className="w-full object-cover"
-              style={{ aspectRatio: '4/5' }}
-            />
+            <div className="rounded-card overflow-hidden card-surface">
+              <img
+                src={`${import.meta.env.BASE_URL}images/design-work-2.jpeg`}
+                alt="Espacio creativo QUIO"
+                className="w-full object-cover"
+                style={{ aspectRatio: '4/5' }}
+              />
+            </div>
           </motion.div>
 
-          {/* Contact info blocks */}
           <motion.div
-            className="lg:col-span-5 lg:col-start-8 flex flex-col justify-center"
+            className="lg:col-span-6 flex flex-col gap-5"
             {...fadeUpDelayed(0.15)}
           >
-            {/* WhatsApp */}
-            <div className="border-t border-sage/25 py-8">
-              <p className="label-mono mb-4">WhatsApp</p>
+            <div className="card-surface p-7 md:p-8">
+              <p className="mono-label-sm text-forest/60 mb-3">Vía directa</p>
+              <h2 className="display-md text-forest mb-3">WhatsApp</h2>
+              <p className="text-[14px] text-forest/70 leading-[1.7] mb-6">
+                Respondemos en minutos durante horas hábiles. La forma más rápida de
+                empezar una conversación.
+              </p>
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cta-btn w-full text-center block"
+                className="btn-primary"
               >
-                Escríbenos
+                Escríbenos por WhatsApp →
               </a>
             </div>
 
-            {/* Instagram */}
-            <div className="border-t border-sage/25 py-8">
-              <p className="label-mono mb-3">Instagram</p>
+            <div className="card-surface p-7 md:p-8">
+              <p className="mono-label-sm text-forest/60 mb-3">Redes</p>
+              <h2 className="display-md text-forest mb-3">Instagram</h2>
+              <p className="text-[14px] text-forest/70 leading-[1.7] mb-6">
+                Síguenos para ver trabajo reciente, detrás de cámaras y notas del estudio.
+              </p>
               <a
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[14px] text-forest link-underline"
+                className="btn-outline"
               >
-                {INSTAGRAM_HANDLE}
+                {INSTAGRAM_HANDLE} →
               </a>
             </div>
 
-            {/* Location */}
-            <div className="border-t border-sage/25 py-8">
-              <p className="label-mono mb-3">Ubicación</p>
-              <p className="text-[14px] text-forest">Querétaro, México</p>
-            </div>
-
-            {/* Quote */}
-            <div className="border-t border-sage/25 py-8">
-              <p className="text-[14px] text-muted leading-[1.8]">
-                Nos encanta conocer nuevos proyectos. Si tienes un negocio, una marca o una
-                idea, queremos escucharte.
-              </p>
+            <div className="grid grid-cols-2 gap-5">
+              <div className="card-surface p-6">
+                <p className="mono-label-sm text-forest/60 mb-2">Ubicación</p>
+                <p className="text-[15px] text-forest">Querétaro, México</p>
+              </div>
+              <div className="card-surface p-6">
+                <p className="mono-label-sm text-forest/60 mb-2">Horario</p>
+                <p className="text-[15px] text-forest">Lun–Vie · 10–19h</p>
+              </div>
             </div>
           </motion.div>
         </div>

@@ -5,8 +5,7 @@ export default function LoadingScreen() {
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    // Start container fade while letters are still visible
-    const timer = setTimeout(() => setVisible(false), 2000)
+    const timer = setTimeout(() => setVisible(false), 1400)
     return () => clearTimeout(timer)
   }, [])
 
@@ -14,26 +13,24 @@ export default function LoadingScreen() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-forest"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-cloud-light"
           exit={{ opacity: 0 }}
-          transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
         >
-          {/* Letters fade in and expand, then HOLD — container handles the fade out */}
-          <motion.span
-            className="font-display text-cream text-5xl md:text-7xl lg:text-[5.5rem] select-none pointer-events-none"
-            initial={{ letterSpacing: '-0.05em', opacity: 0 }}
-            animate={{
-              letterSpacing: ['-0.05em', '-0.05em', '0.5em'],
-              opacity: [0, 1, 1],
-            }}
-            transition={{
-              duration: 1.8,
-              times: [0, 0.12, 1],
-              ease: [0.4, 0, 0.2, 1],
-            }}
+          <motion.div
+            className="flex items-baseline gap-3 select-none pointer-events-none"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            QUIO
-          </motion.span>
+            <span
+              className="font-display text-forest text-5xl md:text-7xl"
+              style={{ letterSpacing: '-0.035em' }}
+            >
+              QUIO
+            </span>
+            <span className="mono-label-sm text-forest/60 pb-2">marketing studio</span>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

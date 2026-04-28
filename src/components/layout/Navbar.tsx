@@ -16,7 +16,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => setScrolled(window.scrollY > 10)
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
@@ -26,6 +26,15 @@ export default function Navbar() {
     setMenuOpen(false)
   }, [pathname])
 
+  // Lock body scroll while the mobile overlay is open.
+  useEffect(() => {
+    if (menuOpen) {
+      const prev = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => { document.body.style.overflow = prev }
+    }
+  }, [menuOpen])
+
   const toggleMenu = useCallback(() => setMenuOpen((p) => !p), [])
 
   const linkClass = (to: string) =>
@@ -33,25 +42,54 @@ export default function Navbar() {
       pathname === to ? 'text-forest opacity-100' : 'text-forest/70 hover:opacity-100'
     }`
 
+  const floating = scrolled && !menuOpen
+
+  // One shared transition contract: same duration + easing across every
+  // animating property so the navbar moves as a single object.
+  const NAV_EASE = 'cubic-bezier(0.32, 0.72, 0, 1)'
+  const NAV_DURATION = '700ms'
+  const navTransitionStyle = {
+    transitionDuration: NAV_DURATION,
+    transitionTimingFunction: NAV_EASE,
+  } as const
+
   return (
-    <motion.nav
+    <motion.header
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' as const, delay: 0.1 }}
-      className={`fixed top-0 w-full z-50 transition-colors duration-500 ${
-        scrolled || menuOpen
-          ? 'bg-cream/85 backdrop-blur-md border-b border-forest/8'
-          : 'bg-transparent border-b border-transparent'
-      }`}
+      style={navTransitionStyle}
+      className={[
+        'fixed left-0 right-0 z-50 mx-auto',
+        'transition-[max-width,width,top,background-color,border-color,box-shadow,border-radius]',
+        'will-change-[max-width,top,background-color]',
+        floating
+          ? 'top-4 w-[calc(100%-1rem)] max-w-[1080px] bg-cream/85 backdrop-blur-md border border-forest/10 rounded-card shadow-elevated'
+          : menuOpen
+            ? 'top-0 w-full max-w-none bg-cream/95 backdrop-blur-md border border-transparent border-b-forest/10 rounded-none'
+            : 'top-0 w-full max-w-none bg-transparent border border-transparent rounded-none',
+      ].join(' ')}
       aria-label="Navegación principal"
     >
-      <div className="container-site h-16 md:h-[72px] flex items-center justify-between gap-8">
+      <nav
+        style={navTransitionStyle}
+        className={[
+          'flex items-center justify-between gap-8',
+          'transition-[height,padding]',
+          floating ? 'h-14 px-4 md:px-5' : 'h-16 md:h-[72px] container-site',
+        ].join(' ')}
+      >
         {/* Wordmark */}
         <Link to="/" className="flex items-baseline gap-2 group" aria-label="QUIO — Inicio">
           <span className="font-display text-forest text-[22px] tracking-[-0.03em] leading-none">
             QUIO
           </span>
-          <span className="hidden sm:inline mono-label-sm text-forest/50 pb-[2px]">
+          <span
+            style={navTransitionStyle}
+            className={`mono-label-sm text-forest/50 pb-[2px] transition-[opacity,max-width,margin] overflow-hidden whitespace-nowrap ${
+              floating ? 'opacity-0 max-w-0 ml-0 sm:inline' : 'hidden sm:inline opacity-100 max-w-[200px] ml-0'
+            }`}
+          >
             marketing studio
           </span>
         </Link>
@@ -71,7 +109,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-3">
           <Link to="/contacto" className="btn-outline">
             Contacto
           </Link>
@@ -103,7 +141,7 @@ export default function Navbar() {
             }`}
           />
         </button>
-      </div>
+      </nav>
 
       {/* Mobile overlay */}
       <AnimatePresence>
@@ -174,6 +212,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </motion.header>
   )
 }

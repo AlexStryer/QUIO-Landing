@@ -1,11 +1,19 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// Persists for the SPA session — so the splash only runs on the
+// initial load / hard reload, not when navigating back to "/".
+let hasShownSplash = false
+
 export default function LoadingScreen() {
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(!hasShownSplash)
 
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(false), 1400)
+    if (hasShownSplash) return
+    const timer = setTimeout(() => {
+      hasShownSplash = true
+      setVisible(false)
+    }, 1100)
     return () => clearTimeout(timer)
   }, [])
 
@@ -15,22 +23,25 @@ export default function LoadingScreen() {
         <motion.div
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-cloud-light"
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
         >
-          <motion.div
-            className="flex items-baseline gap-3 select-none pointer-events-none"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+          <motion.span
+            className="font-display text-forest text-5xl md:text-7xl select-none pointer-events-none"
+            initial={{ opacity: 0, y: 6, letterSpacing: '-0.035em' }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              letterSpacing: '-0.035em',
+              transition: { duration: 0.5, ease: 'easeOut' },
+            }}
+            exit={{
+              opacity: 0,
+              letterSpacing: '0.6em',
+              transition: { duration: 0.9, ease: [0.4, 0, 0.2, 1] },
+            }}
           >
-            <span
-              className="font-display text-forest text-5xl md:text-7xl"
-              style={{ letterSpacing: '-0.035em' }}
-            >
-              QUIO
-            </span>
-            <span className="mono-label-sm text-forest/60 pb-2">marketing studio</span>
-          </motion.div>
+            QUIO
+          </motion.span>
         </motion.div>
       )}
     </AnimatePresence>

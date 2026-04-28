@@ -14,6 +14,7 @@ export default {
         forest: '#303625',
         stone: '#d4d4d4',
         sand: 'hsl(38, 30%, 88%)',
+        bloom: '#c4708a',
         ink: '#1a1a1a',
         background: '#f5eedd',
         foreground: '#303625',

@@ -2,40 +2,121 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { WHATSAPP_URL } from '../constants'
 import { fadeUp, fadeUpDelayed, transitionBase } from '../lib/animations'
+import HeroCarousel, { type HeroCarouselImage } from '../components/ui/HeroCarousel'
+import PhotoGallery from '../components/ui/PhotoGallery'
+import FeatureShowcase, {
+  type ShowcaseService,
+} from '../components/ui/FeatureShowcase'
 
-const stats = [
-  { value: '+20', label: 'Marcas acompañadas' },
-  { value: '6', label: 'Años de práctica' },
-  { value: '100%', label: 'Enfoque boutique' },
-  { value: '5', label: 'Fases del método QUIO' },
-] as const
+const magueyImages: HeroCarouselImage[] = [
+  { src: `${import.meta.env.BASE_URL}images/maguey/maguey-01.jpg`, alt: 'Maguey en flor — ilustración vectorial',  rotation: -8 },
+  { src: `${import.meta.env.BASE_URL}images/maguey/maguey-02.jpg`, alt: 'Maguey en flor — acuarela',                rotation:  6 },
+  { src: `${import.meta.env.BASE_URL}images/maguey/maguey-03.jpg`, alt: 'Maguey en fondo mostaza — óleo',           rotation: -4 },
+  { src: `${import.meta.env.BASE_URL}images/maguey/maguey-04.jpg`, alt: 'Maguey con flores rosas',                  rotation:  10 },
+  { src: `${import.meta.env.BASE_URL}images/maguey/maguey-05.jpg`, alt: 'Maguey al atardecer — óleo',               rotation: -12 },
+  { src: `${import.meta.env.BASE_URL}images/maguey/maguey-06.jpg`, alt: 'Maguey con fases lunares — tinta',         rotation:  4 },
+  { src: `${import.meta.env.BASE_URL}images/maguey/maguey-07.jpg`, alt: 'Maguey amarillo — ilustración',            rotation: -6 },
+  { src: `${import.meta.env.BASE_URL}images/maguey/maguey-08.jpg`, alt: 'Maguey verde — acuarela con tinta azul',   rotation:  8 },
+]
 
-const services = [
+const maskReveal = {
+  initial: { y: '100%' },
+  animate: { y: 0 },
+  transition: { duration: 1.1, ease: [0.22, 1, 0.36, 1] as const },
+}
+
+const BASE = import.meta.env.BASE_URL
+
+const showcaseServices: ShowcaseService[] = [
   {
-    num: '01',
+    value: 'contenido',
+    label: 'Contenido',
     title: 'Creación y producción de contenido',
-    desc: 'Fotografía, video y diseño de calidad editorial — siempre anclados a una estrategia clara.',
-    image: 'picnic.png',
+    description: 'Fotografía, video y diseño de calidad editorial, anclados a una estrategia clara.',
+    details: [
+      {
+        title: 'Qué incluye',
+        text: 'Fotografía editorial y comercial, video, motion graphics, diseño gráfico y dirección de arte.',
+      },
+      {
+        title: 'Cómo trabajamos',
+        text: 'Brief estratégico y referencias visuales antes de cualquier disparador. Cada pieza se aprueba contigo antes de publicarse.',
+      },
+      {
+        title: 'Tiempos típicos',
+        text: 'Proyectos completos en 2 a 6 semanas. Sesiones únicas resueltas en una semana.',
+      },
+    ],
+    src: `${BASE}images/picnic.png`,
+    alt: 'Producción editorial',
   },
   {
-    num: '02',
+    value: 'copywriting',
+    label: 'Copywriting',
     title: 'Copywriting estratégico',
-    desc: 'Textos con intención que conectan con tu audiencia y mueven a la acción.',
-    image: 'design-work-2.jpeg',
+    description: 'Textos con intención que conectan con tu audiencia y mueven a la acción.',
+    details: [
+      {
+        title: 'Qué incluye',
+        text: 'Identidad verbal, tono de marca, copy para web, landings, emails, anuncios y guiones para video.',
+      },
+      {
+        title: 'Cómo trabajamos',
+        text: 'Workshop inicial para definir voz y audiencia. Cada pieza con dos rondas de revisión incluidas.',
+      },
+      {
+        title: 'Tiempos típicos',
+        text: 'Identidad verbal completa en 2 a 3 semanas. Copy puntual entre 5 y 7 días.',
+      },
+    ],
+    src: `${BASE}images/design-work-2.jpeg`,
+    alt: 'Copywriting estratégico',
   },
   {
-    num: '03',
+    value: 'publicidad',
+    label: 'Publicidad',
     title: 'Campañas y publicidad digital',
-    desc: 'Meta, Google y TikTok Ads configurados, segmentados y optimizados en tiempo real.',
-    image: 'swimmer.png',
+    description: 'Meta, Google y TikTok Ads configurados y optimizados con presupuesto vivo.',
+    details: [
+      {
+        title: 'Qué incluye',
+        text: 'Estrategia de medios, creativos, segmentación, configuración técnica y optimización continua.',
+      },
+      {
+        title: 'Cómo trabajamos',
+        text: 'Setup intensivo al inicio. Después optimización semanal y reportes claros con decisiones rápidas.',
+      },
+      {
+        title: 'Cómo medimos éxito',
+        text: 'KPIs definidos contigo (CTR, CPL, ROAS), reportes quincenales y ajustes semanales en tiempo real.',
+      },
+    ],
+    src: `${BASE}images/swimmer.png`,
+    alt: 'Campañas digitales',
   },
   {
-    num: '04',
+    value: 'comunidad',
+    label: 'Comunidad',
     title: 'Gestión de redes y comunidad',
-    desc: 'Calendario editorial, community management y métricas que realmente importan.',
-    image: 'design-work-1.jpeg',
+    description: 'Calendario editorial, community management y métricas que realmente importan.',
+    details: [
+      {
+        title: 'Qué incluye',
+        text: 'Calendario editorial mensual, producción de posts, community management diario y reportes claros.',
+      },
+      {
+        title: 'Cómo trabajamos',
+        text: 'Aprobación semanal o mensual contigo. Respondemos DMs y comentarios en tu nombre.',
+      },
+      {
+        title: 'Tiempos típicos',
+        text: 'Onboarding de 2 semanas. Después ritmo mensual continuo, sin sorpresas.',
+      },
+    ],
+    src: `${BASE}images/design-work-1.jpeg`,
+    alt: 'Gestión de comunidad',
   },
-] as const
+]
 
 const methodSteps = [
   { phase: 'Raíz',  title: 'Análisis',    desc: 'Investigamos el terreno antes de plantar. Marca, mercado y audiencia.' },
@@ -56,194 +137,153 @@ export default function Home() {
   return (
     <>
       {/* ─── Hero ─── */}
-      <section className="relative bg-cloud-light overflow-hidden">
+      <section className="relative bg-cloud-light overflow-hidden min-h-screen flex flex-col">
         {/* Painterly floating shapes */}
         <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
           <div
-            className="cloud-a absolute top-[12%] left-[8%] w-[34vw] h-[34vw] max-w-[520px] max-h-[520px] rounded-full blur-3xl"
-            style={{ background: 'radial-gradient(circle, rgba(133,146,109,0.35), transparent 65%)' }}
+            className="cloud-a absolute top-[12%] left-[8%] w-[30vw] h-[30vw] max-w-[480px] max-h-[480px] rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(133,146,109,0.32), transparent 65%)' }}
           />
           <div
-            className="cloud-b absolute top-[6%] right-[4%] w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] rounded-full blur-3xl"
-            style={{ background: 'radial-gradient(circle, rgba(212,212,212,0.7), transparent 60%)' }}
+            className="cloud-b absolute top-[6%] right-[4%] w-[36vw] h-[36vw] max-w-[560px] max-h-[560px] rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(212,212,212,0.6), transparent 60%)' }}
           />
           <div
-            className="cloud-c absolute bottom-[-8%] left-[35%] w-[36vw] h-[36vw] max-w-[540px] max-h-[540px] rounded-full blur-3xl"
-            style={{ background: 'radial-gradient(circle, rgba(118,115,68,0.3), transparent 65%)' }}
+            className="cloud-c absolute bottom-[-10%] left-[40%] w-[34vw] h-[34vw] max-w-[520px] max-h-[520px] rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(196,112,138,0.22), transparent 65%)' }}
           />
         </div>
 
-        <div className="relative container-site pt-32 md:pt-40 lg:pt-48 pb-20 md:pb-28 lg:pb-32 min-h-[88vh] flex flex-col justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: 'easeOut' as const, delay: 0.1 }}
-            className="mb-7"
-          >
-            <span className="badge">
-              <span className="w-1.5 h-1.5 rounded-full bg-sage inline-block" />
-              Aceptando 2 marcas · verano 2026
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: 'easeOut' as const, delay: 0.15 }}
-            className="display-xl text-forest max-w-[18ch]"
-          >
-            Marketing con raíces.
-            <br />
-            Marcas que florecen.
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: 'easeOut' as const, delay: 0.3 }}
-            className="mt-8 max-w-xl text-[16px] md:text-[17px] text-forest/75 leading-[1.6]"
-          >
-            QUIO es un estudio boutique de marketing en Querétaro. Construimos la base
-            estratégica —contenido, publicidad y comunidad— que sostiene el crecimiento
-            de tu marca.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: 'easeOut' as const, delay: 0.45 }}
-            className="mt-10 flex flex-wrap items-center gap-3"
-          >
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
+        <div className="relative container-site pt-24 md:pt-28 pb-10 md:pb-14 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* ── Text column ── */}
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            {/* Slogan — line-by-line mask reveal. Each line slides up from below its mask. */}
+            <h1
+              className="text-forest"
+              style={{
+                fontFamily: "'Garet', 'Outfit', sans-serif",
+                fontWeight: 400,
+                fontSize: 'clamp(2.25rem, 5vw, 3.75rem)',
+                lineHeight: 1.05,
+                letterSpacing: '-0.025em',
+              }}
             >
-              Empezar una conversación →
-            </a>
-            <Link to="/metodo" className="btn-outline">
-              Ver el método
-            </Link>
-          </motion.div>
+              <span className="block overflow-hidden pb-[0.08em]">
+                <motion.span
+                  className="block"
+                  {...maskReveal}
+                  transition={{ ...maskReveal.transition, delay: 0.25 }}
+                >
+                  ¿Por qué esperar 15 años?
+                </motion.span>
+              </span>
+              <span className="block overflow-hidden pb-[0.08em]">
+                <motion.span
+                  className="block"
+                  {...maskReveal}
+                  transition={{ ...maskReveal.transition, delay: 0.55 }}
+                >
+                  Tu marca merece{' '}
+                  <span className="relative inline-block whitespace-nowrap">
+                    <motion.span
+                      aria-hidden="true"
+                      className="absolute left-[-0.08em] right-[-0.08em] top-[0.22em] bottom-[-0.04em] bg-bloom/40 origin-left"
+                      style={{ borderRadius: '2px', zIndex: 0 }}
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 0.75, ease: [0.65, 0, 0.35, 1], delay: 1.75 }}
+                    />
+                    <span className="relative" style={{ zIndex: 1 }}>florecer.</span>
+                  </span>
+                </motion.span>
+              </span>
+            </h1>
 
-          {/* Hero figure — a single editorial image anchored bottom-right */}
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut' as const, delay: 1.05 }}
+              className="mt-7 max-w-[46ch] text-[15px] md:text-[16px] text-forest/75 leading-[1.65]"
+            >
+              Estudio boutique de marketing en Querétaro. Construimos la
+              estrategia, el contenido y la publicidad que sostienen el
+              crecimiento de tu marca.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut' as const, delay: 1.2 }}
+              className="mt-8"
+            >
+              <Link to="/contacto" className="btn-primary">
+                Contáctanos
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* ── Maguey carousel — orbital ── */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1], delay: 0.4 }}
-            className="hidden lg:block absolute right-14 bottom-20 w-[320px] xl:w-[380px]"
-            aria-hidden="true"
+            transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1], delay: 0.45 }}
+            className="hidden lg:block lg:col-span-5 relative h-[clamp(420px,55vh,540px)]"
           >
-            <div className="card-surface overflow-hidden rotate-[2deg]">
-              <img
-                src={`${import.meta.env.BASE_URL}images/regina-palacios.png`}
-                alt=""
-                className="w-full h-[420px] object-cover"
-              />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ─── Stats ─── */}
-      <section className="relative -mt-10 md:-mt-14 z-10">
-        <div className="container-site">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={transitionBase}
-            className="card-surface grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-forest/10"
-          >
-            {stats.map((s) => (
-              <div key={s.label} className="p-6 md:p-8 first:border-t-0 md:first:border-l-0">
-                <p className="stat-number text-forest">{s.value}</p>
-                <p className="mt-3 text-[13px] text-forest/65 leading-snug">{s.label}</p>
-              </div>
-            ))}
+            <HeroCarousel images={magueyImages} radiusX={150} radiusY={210} speed={5} />
           </motion.div>
         </div>
       </section>
 
       {/* ─── About ─── */}
       <section className="section-padding">
-        <div className="container-site grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          <motion.div {...fadeUp} className="lg:col-span-5">
-            <p className="mono-label mb-5">01 — Estudio</p>
-            <h2 className="display-lg text-forest">
-              Raíces profundas, crecimiento visible.
-            </h2>
-          </motion.div>
+        <div className="container-site">
+          <motion.h2
+            {...fadeUp}
+            className="display-lg text-forest text-center max-w-3xl mx-auto mb-5"
+          >
+            Raíces profundas, crecimiento visible.
+          </motion.h2>
+          <motion.p
+            {...fadeUpDelayed(0.05)}
+            className="text-[15px] md:text-[16px] text-forest/70 leading-[1.7] text-center max-w-xl mx-auto"
+          >
+            Estudio boutique en Querétaro. Trabajamos con pocas marcas a la vez
+            para que cada decisión sea deliberada.
+          </motion.p>
 
-          <motion.div {...fadeUpDelayed(0.15)} className="lg:col-span-6 lg:col-start-7 lg:pt-14">
-            <p className="text-[15px] text-forest/75 leading-[1.75] mb-5">
-              Como el maguey, primero las raíces — después la flor. Trabajamos con pocas
-              marcas a la vez para poder involucrarnos de verdad en cada decisión: desde
-              la estrategia hasta la última pieza de contenido.
-            </p>
-            <p className="text-[15px] text-forest/75 leading-[1.75] mb-8">
-              Creemos que las marcas crecen mejor cuando la estrategia precede a la
-              acción, y cuando cada canal tiene un propósito dentro de un sistema claro.
-            </p>
-            <Link to="/estudio" className="link-underline text-[14px] text-forest">
+          <div className="mt-6 lg:mt-8">
+            <PhotoGallery />
+          </div>
+
+          <div className="mt-4 lg:mt-6 flex justify-center">
+            <Link to="/estudio" className="btn-outline">
               Conocer el estudio →
             </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ─── Services ─── */}
       <section className="section-padding pt-0">
         <div className="container-site">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-14 lg:mb-20 items-end">
-            <motion.div {...fadeUp} className="lg:col-span-7">
-              <p className="mono-label mb-5">02 — Servicios</p>
-              <h2 className="display-lg text-forest max-w-[18ch]">
-                Un sistema, no tácticas sueltas.
-              </h2>
-            </motion.div>
-            <motion.p {...fadeUpDelayed(0.15)} className="lg:col-span-4 lg:col-start-9 text-[15px] text-forest/70 leading-[1.7]">
-              Cada servicio construye sobre el anterior. Estrategia, contenido y
-              publicidad que funcionan juntos.
-            </motion.p>
-          </div>
+          <motion.h2
+            {...fadeUp}
+            className="display-lg text-forest text-center max-w-3xl mx-auto mb-5"
+          >
+            Un sistema, no tácticas sueltas.
+          </motion.h2>
+          <motion.p
+            {...fadeUpDelayed(0.05)}
+            className="text-[15px] md:text-[16px] text-forest/70 leading-[1.7] text-center max-w-xl mx-auto mb-10 lg:mb-14"
+          >
+            Cada servicio construye sobre el anterior. Estrategia, contenido y
+            publicidad que funcionan juntos.
+          </motion.p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-            {services.map((s, i) => (
-              <motion.article
-                key={s.num}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ ...transitionBase, delay: (i % 2) * 0.08 }}
-                className="card-surface overflow-hidden group"
-              >
-                <div className="relative aspect-[16/9] overflow-hidden">
-                  <img
-                    src={`${import.meta.env.BASE_URL}images/${s.image}`}
-                    alt={s.title}
-                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
-                  />
-                </div>
-                <div className="p-6 md:p-7">
-                  <div className="flex items-start justify-between gap-4 mb-3">
-                    <h3 className="display-sm text-forest">{s.title}</h3>
-                    <span className="mono-label-sm text-forest/50 pt-1 whitespace-nowrap">
-                      {s.num}
-                    </span>
-                  </div>
-                  <p className="text-[14px] text-forest/70 leading-[1.7]">{s.desc}</p>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-
-          <div className="mt-10 flex justify-center">
-            <Link to="/servicios" className="btn-outline">
-              Ver todos los servicios →
-            </Link>
-          </div>
+          <FeatureShowcase
+            services={showcaseServices}
+            cta={{ label: 'Ver todos los servicios →', to: '/servicios' }}
+          />
         </div>
       </section>
 

@@ -7,6 +7,7 @@ import PhotoGallery from '../components/ui/PhotoGallery'
 import FeatureShowcase, {
   type ShowcaseService,
 } from '../components/ui/FeatureShowcase'
+import ZoomParallaxProjects from '../components/ui/ZoomParallaxProjects'
 
 const magueyImages: HeroCarouselImage[] = [
   { src: `${import.meta.env.BASE_URL}images/maguey/maguey-01.jpg`, alt: 'Maguey en flor — ilustración vectorial',  rotation: -8 },
@@ -31,8 +32,6 @@ const showcaseServices: ShowcaseService[] = [
   {
     value: 'contenido',
     label: 'Contenido',
-    title: 'Creación y producción de contenido',
-    description: 'Fotografía, video y diseño de calidad editorial, anclados a una estrategia clara.',
     details: [
       {
         title: 'Qué incluye',
@@ -53,8 +52,6 @@ const showcaseServices: ShowcaseService[] = [
   {
     value: 'copywriting',
     label: 'Copywriting',
-    title: 'Copywriting estratégico',
-    description: 'Textos con intención que conectan con tu audiencia y mueven a la acción.',
     details: [
       {
         title: 'Qué incluye',
@@ -75,8 +72,6 @@ const showcaseServices: ShowcaseService[] = [
   {
     value: 'publicidad',
     label: 'Publicidad',
-    title: 'Campañas y publicidad digital',
-    description: 'Meta, Google y TikTok Ads configurados y optimizados con presupuesto vivo.',
     details: [
       {
         title: 'Qué incluye',
@@ -97,8 +92,6 @@ const showcaseServices: ShowcaseService[] = [
   {
     value: 'comunidad',
     label: 'Comunidad',
-    title: 'Gestión de redes y comunidad',
-    description: 'Calendario editorial, community management y métricas que realmente importan.',
     details: [
       {
         title: 'Qué incluye',
@@ -118,13 +111,51 @@ const showcaseServices: ShowcaseService[] = [
   },
 ]
 
-const methodSteps = [
-  { phase: 'Raíz',  title: 'Análisis',    desc: 'Investigamos el terreno antes de plantar. Marca, mercado y audiencia.' },
-  { phase: 'Suelo', title: 'Estrategia',  desc: 'Definimos objetivos y un plan concreto, canal por canal.' },
-  { phase: 'Tallo', title: 'Producción',  desc: 'Contenido visual, textual y digital — alineado a la estrategia.' },
-  { phase: 'Flor',  title: 'Publicidad',  desc: 'Campañas integradas con segmentación inteligente y presupuesto vivo.' },
-  { phase: 'Fruto', title: 'Optimización',desc: 'Medimos, ajustamos y evolucionamos con cada ciclo.' },
+// TODO: replace placeholder testimonials with real client quotes.
+const testimonials = [
+  {
+    quote:
+      'Trabajar con QUIO cambió la forma en que pensamos nuestra marca. No nos dieron tácticas sueltas, nos dieron un sistema que sigue dando frutos meses después.',
+    name: 'María Hernández',
+    role: 'Fundadora · Casa Lúa',
+    initials: 'MH',
+    rating: 5,
+  },
+  {
+    quote:
+      'La diferencia se nota desde la primera semana. Cada pieza de contenido tiene una razón de ser y se siente parte de algo más grande.',
+    name: 'Roberto Silva',
+    role: 'Director · Estudio Norte',
+    initials: 'RS',
+    rating: 5,
+  },
+  {
+    quote:
+      'Hace dos años éramos un proyecto chico con muchas dudas. Hoy tenemos una marca clara y campañas que se sostienen solas.',
+    name: 'Ana Martínez',
+    role: 'CEO · Marca Verde',
+    initials: 'AM',
+    rating: 5,
+  },
 ] as const
+
+function Star({ filled }: { filled: boolean }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 20 20"
+      fill={filled ? 'currentColor' : 'none'}
+      stroke="currentColor"
+      strokeWidth="1.4"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className={filled ? 'text-bloom' : 'text-cream/25'}
+    >
+      <path d="M10 1.8l2.59 5.25 5.79.84-4.19 4.08.99 5.77L10 14.99l-5.18 2.75.99-5.77L1.62 7.89l5.79-.84L10 1.8z" />
+    </svg>
+  )
+}
 
 const projects = [
   { title: 'Alta Competencia', category: 'Contenido',  year: '2024', image: 'swimmer.png',        cols: 'md:col-span-7', aspect: '4/3' },
@@ -266,83 +297,81 @@ export default function Home() {
       {/* ─── Services ─── */}
       <section className="section-padding pt-0">
         <div className="container-site">
-          <motion.h2
-            {...fadeUp}
-            className="display-lg text-forest text-center max-w-3xl mx-auto mb-5"
-          >
-            Un sistema, no tácticas sueltas.
-          </motion.h2>
-          <motion.p
-            {...fadeUpDelayed(0.05)}
-            className="text-[15px] md:text-[16px] text-forest/70 leading-[1.7] text-center max-w-xl mx-auto mb-10 lg:mb-14"
-          >
-            Cada servicio construye sobre el anterior. Estrategia, contenido y
-            publicidad que funcionan juntos.
-          </motion.p>
-
           <FeatureShowcase
+            title="Un sistema, no tácticas sueltas."
+            description="Cada servicio construye sobre el anterior. Estrategia, contenido y publicidad que funcionan juntos."
             services={showcaseServices}
             cta={{ label: 'Ver todos los servicios →', to: '/servicios' }}
           />
         </div>
       </section>
 
-      {/* ─── Dark method section ─── */}
-      <section className="relative bg-forest text-cream overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 opacity-60 pointer-events-none"
-          style={{
-            background:
-              'radial-gradient(50% 60% at 15% 10%, rgba(133,146,109,0.22), transparent 70%), radial-gradient(45% 55% at 85% 85%, rgba(118,115,68,0.2), transparent 70%)',
-          }}
-        />
+      {/* ─── Testimonials ─── */}
+      <section className="relative bg-forest bg-cloud-dark text-cream overflow-hidden">
         <div className="relative container-site section-padding">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-14 lg:mb-20 items-end">
-            <motion.div {...fadeUp} className="lg:col-span-7">
-              <p className="mono-label text-cream/60 mb-5">03 — Método QUIO</p>
-              <h2 className="display-lg text-cream max-w-[18ch]">
-                Del análisis a resultados, en cinco fases.
-              </h2>
-            </motion.div>
-            <motion.p
-              {...fadeUpDelayed(0.15)}
-              className="lg:col-span-4 lg:col-start-9 text-[15px] text-cream/70 leading-[1.7]"
+          <div className="max-w-2xl mb-14 md:mb-16">
+            <motion.p {...fadeUp} className="mono-label text-cream/55 mb-5">
+              Reseñas
+            </motion.p>
+            <motion.h2
+              {...fadeUpDelayed(0.05)}
+              className="display-lg text-cream mb-5"
             >
-              Un proceso claro y repetible. Así llevamos a tu marca desde la raíz
-              hasta el fruto — sin saltarnos etapas.
+              Lo que dicen nuestros clientes.
+            </motion.h2>
+            <motion.p
+              {...fadeUpDelayed(0.1)}
+              className="text-[15px] md:text-[16px] text-cream/65 leading-[1.7]"
+            >
+              Marcas que han crecido con nosotros. Cada testimonio es de un
+              proyecto real y un proceso compartido.
             </motion.p>
           </div>
 
-          <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 list-none p-0 m-0">
-            {methodSteps.map((step, i) => (
-              <motion.li
-                key={step.title}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
+            {testimonials.map((t, i) => (
+              <motion.figure
+                key={t.name}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ ...transitionBase, delay: i * 0.08 }}
-                className="card-dark p-6 md:p-7 flex flex-col h-full"
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ ...transitionBase, delay: i * 0.1 }}
+                className="card-dark p-7 md:p-8 flex flex-col"
               >
-                <span className="mono-label-sm text-cream/50">
-                  {String(i + 1).padStart(2, '0')} · {step.phase}
-                </span>
-                <h3 className="display-sm text-cream mt-4 mb-3">{step.title}</h3>
-                <p className="text-[13.5px] text-cream/65 leading-[1.65]">{step.desc}</p>
-              </motion.li>
+                <div
+                  className="flex gap-1 mb-5"
+                  aria-label={`${t.rating} de 5 estrellas`}
+                >
+                  {Array.from({ length: 5 }).map((_, idx) => (
+                    <Star key={idx} filled={idx < t.rating} />
+                  ))}
+                </div>
+                <blockquote className="text-cream/90 text-[15px] md:text-[16px] leading-[1.65] mb-7 flex-1">
+                  {t.quote}
+                </blockquote>
+                <figcaption className="flex items-center gap-3">
+                  <span
+                    aria-hidden="true"
+                    className="w-10 h-10 rounded-full bg-sage/30 border border-cream/15 flex items-center justify-center text-cream font-medium text-[12px] tracking-[0.04em]"
+                  >
+                    {t.initials}
+                  </span>
+                  <div className="text-[13px] leading-tight">
+                    <div className="text-cream font-medium">{t.name}</div>
+                    <div className="text-cream/55 mt-1">{t.role}</div>
+                  </div>
+                </figcaption>
+              </motion.figure>
             ))}
-          </ol>
-
-          <div className="mt-12 flex justify-center">
-            <Link to="/metodo" className="btn-glass">
-              Ver el método completo →
-            </Link>
           </div>
         </div>
       </section>
 
-      {/* ─── Selected work ─── */}
-      <section className="section-padding">
+      {/* ─── Selected work — zoom parallax replaces the grid on desktop ─── */}
+      <ZoomParallaxProjects />
+
+      {/* ─── Selected work (mobile / tablet) ─── */}
+      <section className="section-padding lg:hidden">
         <div className="container-site">
           <div className="flex items-end justify-between mb-12 md:mb-16 gap-6">
             <motion.div {...fadeUp}>

@@ -54,7 +54,12 @@ body {
 #root {
   min-height: 100svh;
   position: relative;
-  overflow-x: hidden;
+}
+
+/* Suppress horizontal scrollbar without creating a containing block
+   for descendant `position: sticky` (which `overflow:hidden` would do). */
+html, body {
+  overflow-x: clip;
 }
 
 *, *::before, *::after {

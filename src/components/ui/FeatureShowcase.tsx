@@ -10,13 +10,9 @@ export interface ShowcaseDetail {
 export interface ShowcaseService {
   /** Unique value used by the tab pill state. */
   value: string
-  /** Short label shown in the tab pill. */
+  /** Short label shown in the tab pill and the "Sobre {label}" eyebrow. */
   label: string
-  /** Per-service heading shown in the left column. */
-  title: string
-  /** Per-service paragraph shown in the left column. */
-  description: string
-  /** Expandable items shown as an accordion below the description. */
+  /** Expandable items shown as an accordion. Content changes per service. */
   details?: ShowcaseDetail[]
   /** Image source for the right panel. */
   src: string
@@ -24,6 +20,10 @@ export interface ShowcaseService {
 }
 
 interface FeatureShowcaseProps {
+  /** Section heading shown at the top of the left column. */
+  title: string
+  /** Section description shown below the heading. */
+  description?: string
   services: ShowcaseService[]
   cta?: { label: string; to: string }
   defaultValue?: string
@@ -35,10 +35,12 @@ interface FeatureShowcaseProps {
 const easeOut = [0.22, 1, 0.36, 1] as const
 
 export default function FeatureShowcase({
+  title,
+  description,
   services,
   cta,
   defaultValue,
-  panelHeight = 480,
+  panelHeight = 460,
   className = '',
 }: FeatureShowcaseProps) {
   const [activeValue, setActiveValue] = useState(
@@ -47,8 +49,6 @@ export default function FeatureShowcase({
   const [openDetail, setOpenDetail] = useState<number | null>(null)
   const active = services.find((s) => s.value === activeValue) ?? services[0]
 
-  // Reset the accordion when the service switches so users don't land on a
-  // stale open state from a previous service.
   useEffect(() => {
     setOpenDetail(null)
   }, [activeValue])
@@ -57,22 +57,26 @@ export default function FeatureShowcase({
 
   return (
     <div className={`grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start ${className}`}>
-      {/* ── Left column — per-service content + accordion ── */}
+      {/* ── Left column — static section heading + per-service accordion ── */}
       <div className="lg:col-span-6">
-        <div className="min-h-[460px]">
+        <h2 className="display-lg text-forest text-balance mb-5">{title}</h2>
+        {description && (
+          <p className="text-[15px] md:text-[16px] text-forest/70 leading-[1.7] max-w-md mb-10">
+            {description}
+          </p>
+        )}
+
+        <div className="min-h-[260px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={active.value}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.45, ease: easeOut }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.4, ease: easeOut }}
             >
-              <h3 className="display-md text-forest max-w-[20ch] mb-5">
-                {active.title}
-              </h3>
-              <p className="text-[15px] md:text-[16px] text-forest/70 leading-[1.7] max-w-lg mb-8">
-                {active.description}
+              <p className="mono-label-sm text-forest/55 mb-4">
+                Sobre {active.label}
               </p>
 
               {active.details && active.details.length > 0 && (
@@ -138,7 +142,7 @@ export default function FeatureShowcase({
         </div>
 
         {cta && (
-          <div className="mt-10">
+          <div className="mt-8">
             <Link to={cta.to} className="btn-primary">
               {cta.label}
             </Link>
@@ -147,7 +151,7 @@ export default function FeatureShowcase({
       </div>
 
       {/* ── Right column — media + tab pill ── */}
-      <div className="lg:col-span-6 lg:sticky lg:top-28">
+      <div className="lg:col-span-6">
         <div
           className="relative overflow-hidden rounded-card border border-forest/10 bg-cream/40"
           style={{
@@ -170,7 +174,6 @@ export default function FeatureShowcase({
             />
           </AnimatePresence>
 
-          {/* Tab pill */}
           <div className="absolute inset-x-0 bottom-5 z-10 flex justify-center px-4">
             <div
               className="flex gap-1 rounded-card border border-forest/10 bg-cream/85 p-1 backdrop-blur-md"

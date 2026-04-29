@@ -358,6 +358,19 @@ export default function Home() {
       </section>
 
       {/* ─── Selected work — zoom parallax replaces the grid on desktop ─── */}
+      <section className="hidden lg:block bg-cloud-light pt-20 md:pt-28 lg:pt-[120px]">
+        <div className="container-site">
+          <div className="flex items-end justify-between gap-6">
+            <motion.div {...fadeUp}>
+              <p className="mono-label mb-5">04 — Trabajo seleccionado</p>
+              <h2 className="display-lg text-forest">Proyectos recientes.</h2>
+            </motion.div>
+            <Link to="/proyectos" className="btn-outline">
+              Ver todos los proyectos →
+            </Link>
+          </div>
+        </div>
+      </section>
       <ZoomParallaxProjects />
 
       {/* ─── Selected work (mobile / tablet) ─── */}

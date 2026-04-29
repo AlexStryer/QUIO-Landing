@@ -13,8 +13,8 @@ const tiles: readonly Tile[] = [
   // Center — the rose-blooming maguey ("florecer"). At scale 4 it fills the
   // viewport exactly, becoming the focal frame at end-of-scroll.
   {
-    src: `${BASE}images/maguey/maguey-04.jpg`,
-    alt: 'Maguey en flor',
+    src: `${BASE}images/maguey/maguey-05.jpg`,
+    alt: 'Maguey en flor — rosa',
     positionClass: '',
   },
   {

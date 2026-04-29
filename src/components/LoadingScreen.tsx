@@ -13,7 +13,7 @@ export default function LoadingScreen() {
     const timer = setTimeout(() => {
       hasShownSplash = true
       setVisible(false)
-    }, 1100)
+    }, 1500)
     return () => clearTimeout(timer)
   }, [])
 

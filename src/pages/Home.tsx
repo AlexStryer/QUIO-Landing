@@ -8,6 +8,7 @@ import FeatureShowcase, {
   type ShowcaseService,
 } from '../components/ui/FeatureShowcase'
 import ZoomParallaxProjects from '../components/ui/ZoomParallaxProjects'
+import MotionButton from '../components/ui/MotionButton'
 
 const magueyImages: HeroCarouselImage[] = [
   { src: `${import.meta.env.BASE_URL}images/maguey/maguey-01.jpg`, alt: 'Maguey en flor — ilustración vectorial',  rotation: -8 },
@@ -172,15 +173,15 @@ export default function Home() {
         {/* Painterly floating shapes */}
         <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
           <div
-            className="cloud-a absolute top-[12%] left-[8%] w-[30vw] h-[30vw] max-w-[480px] max-h-[480px] rounded-full blur-3xl"
+            className="cloud-a absolute top-[12%] left-[8%] w-[30vw] h-[30vw] max-w-[480px] max-h-[480px] rounded-full blur-2xl"
             style={{ background: 'radial-gradient(circle, rgba(133,146,109,0.32), transparent 65%)' }}
           />
           <div
-            className="cloud-b absolute top-[6%] right-[4%] w-[36vw] h-[36vw] max-w-[560px] max-h-[560px] rounded-full blur-3xl"
+            className="cloud-b absolute top-[6%] right-[4%] w-[36vw] h-[36vw] max-w-[560px] max-h-[560px] rounded-full blur-2xl"
             style={{ background: 'radial-gradient(circle, rgba(212,212,212,0.6), transparent 60%)' }}
           />
           <div
-            className="cloud-c absolute bottom-[-10%] left-[40%] w-[34vw] h-[34vw] max-w-[520px] max-h-[520px] rounded-full blur-3xl"
+            className="cloud-c absolute bottom-[-10%] left-[40%] w-[34vw] h-[34vw] max-w-[520px] max-h-[520px] rounded-full blur-2xl"
             style={{ background: 'radial-gradient(circle, rgba(196,112,138,0.22), transparent 65%)' }}
           />
         </div>
@@ -205,15 +206,6 @@ export default function Home() {
                   {...maskReveal}
                   transition={{ ...maskReveal.transition, delay: 0.25 }}
                 >
-                  ¿Por qué esperar 15 años?
-                </motion.span>
-              </span>
-              <span className="block overflow-hidden pb-[0.08em]">
-                <motion.span
-                  className="block"
-                  {...maskReveal}
-                  transition={{ ...maskReveal.transition, delay: 0.55 }}
-                >
                   Tu marca merece{' '}
                   <span className="relative inline-block whitespace-nowrap">
                     <motion.span
@@ -222,7 +214,7 @@ export default function Home() {
                       style={{ borderRadius: '2px', zIndex: 0 }}
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: 1 }}
-                      transition={{ duration: 0.75, ease: [0.65, 0, 0.35, 1], delay: 1.75 }}
+                      transition={{ duration: 0.75, ease: [0.65, 0, 0.35, 1], delay: 1.45 }}
                     />
                     <span className="relative" style={{ zIndex: 1 }}>florecer.</span>
                   </span>
@@ -236,9 +228,9 @@ export default function Home() {
               transition={{ duration: 0.8, ease: 'easeOut' as const, delay: 1.05 }}
               className="mt-7 max-w-[46ch] text-[15px] md:text-[16px] text-forest/75 leading-[1.65]"
             >
-              Estudio boutique de marketing en Querétaro. Construimos la
-              estrategia, el contenido y la publicidad que sostienen el
-              crecimiento de tu marca.
+              El maguey espera 15 años para florecer. Tu marca no tiene por qué.
+              Somos el estudio de marketing que construye la estrategia, el
+              contenido y la publicidad para que tu marca crezca con raíz.
             </motion.p>
 
             <motion.div
@@ -247,9 +239,7 @@ export default function Home() {
               transition={{ duration: 0.8, ease: 'easeOut' as const, delay: 1.2 }}
               className="mt-8"
             >
-              <Link to="/contacto" className="btn-primary">
-                Contáctanos
-              </Link>
+              <MotionButton to="/contacto" label="Contáctanos" />
             </motion.div>
           </div>
 
